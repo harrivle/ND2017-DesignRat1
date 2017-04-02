@@ -3,6 +3,7 @@ package drat1.views;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
+
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.action.*;
@@ -41,8 +42,8 @@ public class SampleView extends ViewPart {
 	private Action action1;
 	private Action action2;
 	private Action doubleClickAction;
-	 
 
+	
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		public String getColumnText(Object obj, int index) {
 			return getText(obj);
