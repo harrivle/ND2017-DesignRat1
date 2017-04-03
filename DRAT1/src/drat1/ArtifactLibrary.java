@@ -21,18 +21,20 @@ public class ArtifactLibrary {
 	public Map<String, Requirements> requirements;
 	//XMLParser xmlParser;
 	
-	public static void main() {
-		System.out.println("\n\nTesting if singleton library is initialized\n\n");
-		MessageBox msb = new MessageBox(null);
-		msb.setMessage("Testing if singleton library is initialized");
-		msb.open();
+	public void test() {
+		//System.out.println("\n\nTesting if singleton library is initialized\n\n");
 		
 		try {
 			XMLParser xmlParser = new XMLParser();
-		} catch (SAXException e) {
+			xmlParser.parse();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void simpleTest() {
+		System.out.println("\n\nTesting if singleton library is initialized\n\n");
 	}
 	
 }

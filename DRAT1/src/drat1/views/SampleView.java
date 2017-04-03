@@ -1,8 +1,9 @@
 package drat1.views;
 
-
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
+
+import drat1.ArtifactLibrary;
 
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
@@ -43,6 +44,7 @@ public class SampleView extends ViewPart {
 	private Action action2;
 	private Action doubleClickAction;
 
+	public ArtifactLibrary library;
 	
 	class ViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 		public String getColumnText(Object obj, int index) {
@@ -60,6 +62,9 @@ public class SampleView extends ViewPart {
 	 * The constructor.
 	 */
 	public SampleView() {
+		library = ArtifactLibrary.getInstance();
+		library.simpleTest();
+		library.test();
 	}
 
 	/**
@@ -70,7 +75,7 @@ public class SampleView extends ViewPart {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		
 		viewer.setContentProvider(ArrayContentProvider.getInstance());
-		viewer.setInput(new String[] { "One", "Two", "Three" });
+		viewer.setInput(new String[] { "Make New Design Decision", "Go to Crud View", "Go to Library View" });
 	viewer.setLabelProvider(new ViewLabelProvider());
 
 		// Create the help context id for the viewer's control
