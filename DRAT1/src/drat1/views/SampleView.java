@@ -63,8 +63,8 @@ public class SampleView extends ViewPart {
 	 */
 	public SampleView() {
 		library = ArtifactLibrary.getInstance();
-		library.simpleTest();
-		library.test();
+		//library.simpleTest();
+		//library.test();
 	}
 
 	/**

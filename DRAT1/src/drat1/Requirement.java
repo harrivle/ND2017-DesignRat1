@@ -1,22 +1,16 @@
 package drat1;
 
-public class DesignDecision {
+public class Requirement {
 
 	String id;
 	String description;
 	
-	
-	DesignDecision() {
+	Requirement() {
 		
 	}
 
-	public DesignDecision(XMLParsableArtifact artifact) {
+	public Requirement(XMLParsableArtifact artifact) {
 		id = artifact.id;
 		description = artifact.description;
 	}
-	
-	
-	
-	
-	
 }
