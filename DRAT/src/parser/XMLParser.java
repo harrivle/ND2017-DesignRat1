@@ -1,5 +1,4 @@
-
-package drat1;
+package parser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -64,7 +63,7 @@ public class XMLParser {
 			if (eventType == XMLStreamConstants.START_ELEMENT) {
 				String elementName = reader.getLocalName();
 				if (plural.equals(elementName)) {
-					artifactList = new ArrayList< >();
+					artifactList = new ArrayList<>();
 				} else if (singular.equals(elementName)) {
 					art = new XMLParsableArtifact();
 				} else if ("ID".equals(elementName)) {

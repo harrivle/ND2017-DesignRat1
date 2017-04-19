@@ -1,4 +1,4 @@
-package drat1;
+package parser;
 
 public class DesignDecision {
 
