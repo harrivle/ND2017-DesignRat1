@@ -2,9 +2,6 @@ package drat1;
 
 import java.util.HashMap;
 
-import org.eclipse.swt.widgets.MessageBox;
-import org.xml.sax.SAXException;
-
 public class ArtifactLibrary {
 	HashMap<String, DesignDecision> designDecisions = new HashMap<String, DesignDecision>();
 	HashMap<String, Requirement> requirments = new HashMap<String, Requirement>();
