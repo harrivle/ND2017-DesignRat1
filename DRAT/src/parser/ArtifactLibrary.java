@@ -1,13 +1,12 @@
 package parser;
 
 import java.util.HashMap;
-
-import org.eclipse.swt.widgets.MessageBox;
-import org.xml.sax.SAXException;
+import java.util.HashSet;
 
 public class ArtifactLibrary {
 	HashMap<String, DesignDecision> designDecisions = new HashMap<String, DesignDecision>();
 	HashMap<String, Requirement> requirements = new HashMap<String, Requirement>();
+	HashMap<String, HashSet<String> > designReqLink = new HashMap<String, HashSet<String> >();
 	
 	private static ArtifactLibrary instance = null;
 	public ArtifactLibrary() {
@@ -15,9 +14,11 @@ public class ArtifactLibrary {
 		
 		initializeDesignDecisions();
 		initializeRequirements();
+		initializeTraceMatrix();
 		
 		testWithDisplay();
 	}
+
 	public static ArtifactLibrary getInstance() {
 		if(instance == null) {
 			instance = new ArtifactLibrary();
@@ -37,6 +38,7 @@ public class ArtifactLibrary {
 		XMLParsableArtifactContainer rawDesList = new XMLParsableArtifactContainer("DesignDecision");
 		for(XMLParsableArtifact artifact : rawDesList.artifactList) {
 			designDecisions.put(artifact.getId(), new DesignDecision(artifact));
+			designReqLink.put(artifact.getId(), new HashSet<String>() );
 		}
 	}
 	
@@ -46,6 +48,13 @@ public class ArtifactLibrary {
 			requirements.put(artifact.getId(), new Requirement(artifact));
 		}		
 	}
+	
+	private void initializeTraceMatrix() {
+		XMLParsableArtifactContainer rawReqDesignLink = new XMLParsableArtifactContainer("TM_Reqs_Design");
+		for(XMLParsableArtifact artifact : rawReqDesignLink.artifactList) {
+			designReqLink.get(artifact.description).add(artifact.id);
+		}
+	}	
 	
 	public void testWithDisplay() {
 		for(String key : designDecisions.keySet()) System.out.println(key + ": " + designDecisions.get(key).description);
