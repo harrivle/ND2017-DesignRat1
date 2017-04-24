@@ -6,6 +6,8 @@ import java.util.HashSet;
 public class ArtifactLibrary {
 	HashMap<String, DesignDecision> designDecisions = new HashMap<String, DesignDecision>();
 	HashMap<String, Requirement> requirements = new HashMap<String, Requirement>();
+	
+	//map of design decision ID to set of requirement IDs
 	HashMap<String, HashSet<String> > designReqLink = new HashMap<String, HashSet<String> >();
 	
 	private static ArtifactLibrary instance = null;
