@@ -84,6 +84,16 @@ public class librarywindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int index = LibraryList.getSelectionIndex();
+				String item= LibraryList.getItem(index);
+				String delimeters = "[ ,]+";
+				item = item.replace("[", "");
+				item = item.replace("]", "");
+				String [] items= item.split(delimeters);
+				crudwindow w1 = new crudwindow();
+				//w1.createContents(lib,items);
+				//w1.open(lib);
+				//w1.txtDesignName.setText(items[0]);
+				w1.open(lib,items);
 				
 			}
 		});

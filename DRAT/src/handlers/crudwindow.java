@@ -19,8 +19,8 @@ import org.eclipse.swt.events.SelectionEvent;
 public class crudwindow {
 
 	protected Shell shell;
-	private Text txtDesignName;
-	private Text txtDesignDescription;
+	public Text txtDesignName;
+	public Text txtDesignDescription;
 	//String[] requirementList;
 	Vector<String> saveREQS = new Vector<String>();
 	Vector<String> saveCODE = new Vector<String>();
@@ -41,9 +41,9 @@ public class crudwindow {
 	/**
 	 * Open the window.
 	 */
-	public void open(ArtifactLibrary lib) {
+	public void open(ArtifactLibrary lib, String[] items) {
 		Display display = Display.getDefault();
-		createContents(lib);
+		createContents(lib,items);
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -56,7 +56,7 @@ public class crudwindow {
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents(ArtifactLibrary lib) {
+	protected void createContents(ArtifactLibrary lib, String[] items) {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
@@ -67,13 +67,18 @@ public class crudwindow {
 		lblCrudview.setText("CRUDView");
 		
 		txtDesignName = new Text(shell, SWT.BORDER);
-		txtDesignName.setText("Design Name");
+		txtDesignName.setText(items[0]);
 		txtDesignName.setBounds(10, 40, 359, 19);
 		
 		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.MULTI);
 		txtDesignDescription.setText("Design Description");
 		txtDesignDescription.setBounds(10, 65, 359, 113);
 		
+		//put initial requirements into saveREQS
+		for(int i=1; i<items.length;i++)
+		{
+			saveREQS.addElement(items[i]);
+		}
 		Button reqButton = new Button(shell, SWT.NONE);
 		reqButton.addSelectionListener(new SelectionAdapter() {
 			@Override
