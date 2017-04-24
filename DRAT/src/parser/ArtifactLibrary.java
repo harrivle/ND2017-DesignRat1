@@ -34,6 +34,10 @@ public class ArtifactLibrary {
 		return requirements;
 	}
 	
+	public HashMap<String, HashSet<String> > getDesignReqLink(){
+		return designReqLink;
+	}
+	
 	public void initializeDesignDecisions() {
 		XMLParsableArtifactContainer rawDesList = new XMLParsableArtifactContainer("DesignDecision");
 		for(XMLParsableArtifact artifact : rawDesList.artifactList) {
@@ -49,7 +53,7 @@ public class ArtifactLibrary {
 		}		
 	}
 	
-	private void initializeTraceMatrix() {
+	public void initializeTraceMatrix() {
 		XMLParsableArtifactContainer rawReqDesignLink = new XMLParsableArtifactContainer("TM_Reqs_Design");
 		for(XMLParsableArtifact artifact : rawReqDesignLink.artifactList) {
 			designReqLink.get(artifact.description).add(artifact.id);

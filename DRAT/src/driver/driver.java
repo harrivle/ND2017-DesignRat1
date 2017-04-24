@@ -2,6 +2,7 @@ package driver;
 
 import handlers.codewindow;
 import handlers.crudwindow;
+import handlers.librarywindow;
 import handlers.reqwindow;
 import parser.ArtifactLibrary;
 
@@ -10,14 +11,21 @@ public class driver {
 		ArtifactLibrary lib = new ArtifactLibrary();
 		lib.initializeDesignDecisions();
 		lib.initializeRequirements();
-		lib.testWithDisplay();
+		lib.initializeTraceMatrix();
+		//lib.testWithDisplay();
 		
-		try {
+		try{
+			librarywindow window = new librarywindow();
+			window.open(lib);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		/*try {
 			crudwindow window = new crudwindow();
 			window.open(lib);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 		/*try {
 			reqwindow window = new reqwindow();
 			window.open(lib);
