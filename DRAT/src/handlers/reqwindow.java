@@ -5,12 +5,14 @@ import org.eclipse.swt.widgets.Label;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import parser.ArtifactLibrary;
+import parser.Requirement;
 
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
@@ -65,15 +67,10 @@ public class reqwindow {
 		
 		List wholeList = new List(shell, SWT.BORDER);
 		wholeList.setBounds(39, 47, 110, 191);
-		int i = 0;
-		/*wholeList.add("Req 1", 0);
-		wholeList.add("Req 2", 1);
-		wholeList.add("Req 3", 2);*/
-		Iterator it = lib.getRequirements().entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pair = (Map.Entry)it.next();
-	        wholeList.add(pair.getKey().toString(), i++);
-	        it.remove();
+
+
+	    for(Entry<String, Requirement> R : lib.getRequirements().entrySet()) {
+	    	wholeList.add(R.getValue().id);// + ": " + R.getValue().description);
 	    }
 		
 		

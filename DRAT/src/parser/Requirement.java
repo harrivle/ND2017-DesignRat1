@@ -2,8 +2,8 @@ package parser;
 
 public class Requirement {
 
-	String id;
-	String description;
+	public String id;
+	public String description;
 	
 	Requirement() {
 		
