@@ -3,6 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: CodeTaggingTool
 Bundle-SymbolicName: CodeTaggingTool;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Export-Package: codetaggingtool.parts,
+ net.mv.tutorial.annotation,
+ org.eclipse.wb.swt
 Require-Bundle: javax.inject,
  org.eclipse.osgi,
  org.eclipse.jface,
@@ -23,4 +26,3 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: javax.annotation;version="1.2.0",
  net.mv.tutorial.annotation,
  org.eclipse.jdt.internal.ui.javaeditor
-Export-Package: net.mv.tutorial.annotation
