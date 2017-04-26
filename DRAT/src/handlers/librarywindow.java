@@ -5,8 +5,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.List;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
@@ -65,13 +67,17 @@ public class librarywindow {
 		LibraryList.setBounds(10, 51, 426, 191);
 		
 		//add stuff to list from library
-		int i=0;
-		Iterator it = lib.getDesignReqLink().map.entrySet().iterator();
+		//int i=0;
+		//Iterator it = lib.getDesignReqLink().map.entrySet().iterator();
 		
-	    while (it.hasNext()) {
+	    /*while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
 	        LibraryList.add(pair.getKey().toString()+" "+pair.getValue().toString(), i++);
 	        it.remove();
+	    }*/
+	    
+	    for(Entry<String, HashSet<String>> R : lib.getDesignReqLink().map.entrySet()) {
+	    	LibraryList.add(R.getKey().toString()+" "+R.getValue().toString());// + ": " + R.getValue().description);
 	    }
 
 	    
