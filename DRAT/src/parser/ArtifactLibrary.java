@@ -62,16 +62,23 @@ public class ArtifactLibrary {
 		for(String key : requirements.map.keySet()) System.out.println(key + ": " + requirements.map.get(key));
 	}
 	
-	//Useful get functions
+	//get requirement set from design id
 	public HashSet<String> getReqIdList(String designDecisionId) {
 		return designReqLink.map.get(designDecisionId);
 	}
 	
+	//set requirement list given design id and new list
 	public void setReqIdList(String designDecisionId, HashSet<String> reqSet) {
 		designReqLink.map.put(designDecisionId, reqSet);
 	}
 	
+	//get design design decision description given id
 	public String getDesignDesc(String designDecisionId) {
 		return designDecisions.map.get(designDecisionId).description;
+	}
+	
+	//set design design decision description given id and description
+	public void setDesignDesc(String designDecisionId, String description)  {
+		designDecisions.map.get(designDecisionId).description = description;
 	}
 }

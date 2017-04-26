@@ -127,6 +127,8 @@ public class crudwindow {
 			public void widgetSelected(SelectionEvent e) {
 				String captureText = txtDesignName.getText();
 				String captureDescription= txtDesignDescription.getText();
+				lib.setDesignDesc(captureText, captureDescription);
+				
 				System.out.printf("Name: %s Description: %s\n", captureText, captureDescription);
 				for(int i =0; i<saveREQS.size();i++)
 				{
@@ -145,6 +147,7 @@ public class crudwindow {
 		btnDelete.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
 				txtDesignName.setText("");
 				txtDesignDescription.setText("");
 				saveCODE.clear();
