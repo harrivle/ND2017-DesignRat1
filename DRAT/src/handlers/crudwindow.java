@@ -71,7 +71,7 @@ public class crudwindow {
 		txtDesignName.setBounds(10, 40, 359, 19);
 		
 		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.MULTI);
-		txtDesignDescription.setText("Design Description");
+		txtDesignDescription.setText(lib.getDesignDesc(items[0]));
 		txtDesignDescription.setBounds(10, 65, 359, 113);
 		
 		//put initial requirements into saveREQS

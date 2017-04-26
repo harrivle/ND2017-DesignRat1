@@ -9,9 +9,9 @@ import parser.ArtifactLibrary;
 public class driver {
 	public static void main(String [] args) {
 		ArtifactLibrary lib = new ArtifactLibrary();
-		lib.initializeDesignDecisions();
-		lib.initializeRequirements();
-		lib.initializeTraceMatrix();
+		//lib.initializeDesignDecisions();
+		//lib.initializeRequirements();
+		//lib.initializeTraceMatrix();
 		//lib.testWithDisplay();
 		
 		try{

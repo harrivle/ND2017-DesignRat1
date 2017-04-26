@@ -69,8 +69,8 @@ public class reqwindow {
 		wholeList.setBounds(39, 47, 110, 191);
 
 
-	    for(Entry<String, Requirement> R : lib.getRequirements().entrySet()) {
-	    	wholeList.add(R.getValue().id);// + ": " + R.getValue().description);
+	    for(Entry<String, String> R : lib.getRequirements().map.entrySet()) {
+	    	wholeList.add(R.getKey());// + ": " + R.getValue().description);
 	    }
 		
 		

@@ -66,13 +66,15 @@ public class librarywindow {
 		
 		//add stuff to list from library
 		int i=0;
-		Iterator it = lib.getDesignReqLink().entrySet().iterator();
+		Iterator it = lib.getDesignReqLink().map.entrySet().iterator();
 		
 	    while (it.hasNext()) {
 	        Map.Entry pair = (Map.Entry)it.next();
 	        LibraryList.add(pair.getKey().toString()+" "+pair.getValue().toString(), i++);
 	        it.remove();
 	    }
+
+	    
 		
 		Label titleLabel = new Label(shell, SWT.NONE);
 		titleLabel.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
