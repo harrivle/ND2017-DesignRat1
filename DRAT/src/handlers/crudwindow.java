@@ -121,6 +121,7 @@ public class crudwindow {
 		codeButton.setBounds(131, 184, 121, 28);
 		codeButton.setText("View/Edit Code");
 		
+		//Save Button
 		Button saveButton = new Button(shell, SWT.NONE);
 		saveButton.addSelectionListener(new SelectionAdapter() {
 			@Override
