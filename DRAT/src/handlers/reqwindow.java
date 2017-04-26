@@ -3,6 +3,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,9 +41,9 @@ public class reqwindow {
 	/**
 	 * Open the window.
 	 */
-	public void open(ArtifactLibrary lib, Vector<String> vec) {
+	public void open(ArtifactLibrary lib, String designId) {
 		Display display = Display.getDefault();
-		createContents(lib, vec);
+		createContents(lib, designId);
 		shell.open();
 		shell.layout();
 		while (!shell.isDisposed()) {
@@ -55,7 +56,7 @@ public class reqwindow {
 	/**
 	 * Create contents of the window.
 	 */
-	protected void createContents(ArtifactLibrary lib, Vector<String> vec) {
+	protected void createContents(ArtifactLibrary lib, String designId) {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
@@ -77,7 +78,7 @@ public class reqwindow {
 		List list = new List(shell, SWT.BORDER);
 		list.setBounds(255, 47, 115, 191);
 		
-		for (String str : vec) {
+		for (String str : lib.getReqIdList(designId)) {
 			list.add(str);
 		}
 		
@@ -101,6 +102,9 @@ public class reqwindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				saveList = list.getItems();
+				HashSet<String> saveSet = new HashSet<String>();
+				for(String id : saveList) saveSet.add(id);
+				lib.setReqIdList(designId, saveSet);
 				shell.close();
 			}
 		});

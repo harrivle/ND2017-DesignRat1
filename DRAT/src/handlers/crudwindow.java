@@ -84,7 +84,8 @@ public class crudwindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				reqwindow req = new reqwindow();
-				req.open(lib, saveREQS);
+				System.out.println(items[0]);
+				req.open(lib, items[0]);
 				if(req.shell.isDisposed())
 				{
 					System.out.println("Window was closed"); 
