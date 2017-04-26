@@ -101,6 +101,7 @@ public class reqwindow {
 		btnSave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				//on save, add items to set and send to library
 				saveList = list.getItems();
 				HashSet<String> saveSet = new HashSet<String>();
 				for(String id : saveList) saveSet.add(id);
