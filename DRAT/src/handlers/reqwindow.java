@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.jface.viewers.ListViewer;
 
 public class reqwindow {
 
@@ -55,19 +56,20 @@ public class reqwindow {
 
 	/**
 	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents(ArtifactLibrary lib, String designId) {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
 		
-		Label lblReqwindow = new Label(shell, SWT.NONE);
+		Label lblReqwindow = new Label(shell, SWT.CENTER);
 		lblReqwindow.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
-		lblReqwindow.setBounds(152, 10, 126, 24);
-		lblReqwindow.setText("ReqWindow");
+		lblReqwindow.setBounds(23, 10, 391, 24);
+		lblReqwindow.setText("Select Requirements for " + designId);
 		
-		List wholeList = new List(shell, SWT.BORDER);
-		wholeList.setBounds(39, 47, 110, 191);
+		List wholeList = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		wholeList.setBounds(23, 47, 142, 221);
 
 
 	    for(Entry<String, String> R : lib.getRequirements().map.entrySet()) {
@@ -75,14 +77,14 @@ public class reqwindow {
 	    }
 		
 		
-		List list = new List(shell, SWT.BORDER);
-		list.setBounds(255, 47, 115, 191);
+		List list = new List(shell, SWT.BORDER | SWT.V_SCROLL);
+		list.setBounds(262, 47, 152, 187);
 		
 		for (String str : lib.getReqIdList(designId)) {
 			list.add(str);
 		}
 		
-		Button moveRightButton = new Button(shell, SWT.NONE);
+		Button moveRightButton = new Button(shell, SWT.CENTER);
 		moveRightButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -90,11 +92,11 @@ public class reqwindow {
 				list.add(wholeList.getItem(index));
 			}
 		});
-		moveRightButton.setBounds(154, 82, 95, 28);
+		moveRightButton.setBounds(171, 82, 86, 28);
 		moveRightButton.setText("----->");
 		
 		Button button = new Button(shell, SWT.NONE);
-		button.setBounds(154, 174, 95, 28);
+		button.setBounds(171, 174, 86, 28);
 		button.setText("<------");
 		
 		Button btnSave = new Button(shell, SWT.NONE);
@@ -109,7 +111,7 @@ public class reqwindow {
 				shell.close();
 			}
 		});
-		btnSave.setBounds(275, 240, 95, 28);
+		btnSave.setBounds(295, 240, 95, 28);
 		btnSave.setText("Save");
 		button.addSelectionListener(new SelectionAdapter(){
 			@Override

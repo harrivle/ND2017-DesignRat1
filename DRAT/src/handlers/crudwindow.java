@@ -55,6 +55,7 @@ public class crudwindow {
 
 	/**
 	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents(ArtifactLibrary lib, String[] items) {
 		shell = new Shell();
@@ -68,11 +69,11 @@ public class crudwindow {
 		
 		txtDesignName = new Text(shell, SWT.BORDER);
 		txtDesignName.setText(items[0]);
-		txtDesignName.setBounds(10, 40, 359, 19);
+		txtDesignName.setBounds(10, 40, 415, 19);
 		
-		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.MULTI);
+		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
 		txtDesignDescription.setText(lib.getDesignDesc(items[0]));
-		txtDesignDescription.setBounds(10, 65, 359, 113);
+		txtDesignDescription.setBounds(10, 65, 415, 135);
 		
 		//put initial requirements into saveREQS
 		for(int i=1; i<items.length;i++)
@@ -97,8 +98,8 @@ public class crudwindow {
 				}
 			}
 		});
-		reqButton.setBounds(10, 194, 115, 28);
-		reqButton.setText("View/Edit Req");
+		reqButton.setBounds(10, 206, 173, 28);
+		reqButton.setText("View/Edit Requirements");
 		
 		Button codeButton = new Button(shell, SWT.NONE);
 		codeButton.addSelectionListener(new SelectionAdapter() {
@@ -118,7 +119,7 @@ public class crudwindow {
 				
 			}
 		});
-		codeButton.setBounds(131, 184, 121, 28);
+		codeButton.setBounds(180, 206, 138, 28);
 		codeButton.setText("View/Edit Code");
 		
 		//Save Button
@@ -141,7 +142,7 @@ public class crudwindow {
 				}
 			}
 		});
-		saveButton.setBounds(10, 223, 95, 28);
+		saveButton.setBounds(10, 240, 95, 28);
 		saveButton.setText("Save");
 		
 		Button btnDelete = new Button(shell, SWT.NONE);
@@ -155,7 +156,7 @@ public class crudwindow {
 				saveREQS.clear();
 			}
 		});
-		btnDelete.setBounds(111, 223, 95, 28);
+		btnDelete.setBounds(122, 240, 95, 28);
 		btnDelete.setText("Delete");
 		
 		Button btnCancel = new Button(shell, SWT.NONE);
@@ -165,7 +166,7 @@ public class crudwindow {
 				shell.close();
 			}
 		});
-		btnCancel.setBounds(212, 223, 95, 28);
+		btnCancel.setBounds(223, 240, 95, 28);
 		btnCancel.setText("Cancel");
 
 	}

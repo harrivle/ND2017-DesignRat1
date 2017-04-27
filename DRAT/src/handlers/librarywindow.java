@@ -6,8 +6,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.List;
 
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
@@ -63,7 +61,7 @@ public class librarywindow {
 		shell.setText("SWT Application");
 		shell.setLayout(null);
 		
-		List LibraryList = new List(shell, SWT.BORDER);
+		List LibraryList = new List(shell, SWT.BORDER | SWT.V_SCROLL);
 		LibraryList.setBounds(10, 51, 426, 191);
 		
 		//add stuff to list from library
@@ -79,13 +77,12 @@ public class librarywindow {
 	    for(Entry<String, HashSet<String>> R : lib.getDesignReqLink().map.entrySet()) {
 	    	LibraryList.add(R.getKey().toString()+" "+R.getValue().toString());// + ": " + R.getValue().description);
 	    }
-
-	    
+    
 		
-		Label titleLabel = new Label(shell, SWT.NONE);
+		Label titleLabel = new Label(shell, SWT.CENTER);
 		titleLabel.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
-		titleLabel.setBounds(143, 10, 121, 24);
-		titleLabel.setText("LibraryView");
+		titleLabel.setBounds(104, 10, 227, 24);
+		titleLabel.setText("Design Decision Library");
 		
 		Button btnViewedit = new Button(shell, SWT.NONE);
 		btnViewedit.addSelectionListener(new SelectionAdapter() {
