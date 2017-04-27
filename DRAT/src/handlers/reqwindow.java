@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Observable;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
@@ -21,7 +22,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.jface.viewers.ListViewer;
 
-public class reqwindow {
+public class reqwindow extends Observable{
 
 	protected Shell shell;
 	String[] saveList;
@@ -108,6 +109,8 @@ public class reqwindow {
 				HashSet<String> saveSet = new HashSet<String>();
 				for(String id : saveList) saveSet.add(id);
 				lib.setReqIdList(designId, saveSet);
+				setChanged();
+				notifyObservers();
 				shell.close();
 			}
 		});

@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
@@ -16,8 +18,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class crudwindow {
-
+public class crudwindow extends Observable implements Observer{
+	crudwindow o = this;
 	protected Shell shell;
 	public Text txtDesignName;
 	public Text txtDesignDescription;
@@ -85,7 +87,8 @@ public class crudwindow {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				reqwindow req = new reqwindow();
-				System.out.println(items[0]);
+				//System.out.println(items[0]);
+				req.addObserver(o);
 				req.open(lib, items[0]);
 				if(req.shell.isDisposed())
 				{
@@ -109,7 +112,7 @@ public class crudwindow {
 				code.open(lib, saveCODE);
 				if(code.shell.isDisposed())
 				{
-					System.out.println("Window was closed"); 
+					//System.out.println("Window was closed"); 
 					System.out.println(code.saveList.length);
 					for(int i=0; i<code.saveList.length;i++){
 						String x = code.saveList[i];
@@ -130,8 +133,9 @@ public class crudwindow {
 				String captureText = txtDesignName.getText();
 				String captureDescription= txtDesignDescription.getText();
 				lib.setDesignDesc(captureText, captureDescription);
-				
-				System.out.printf("Name: %s Description: %s\n", captureText, captureDescription);
+				setChanged();
+				notifyObservers();
+				/*System.out.printf("Name: %s Description: %s\n", captureText, captureDescription);
 				for(int i =0; i<saveREQS.size();i++)
 				{
 					System.out.println(saveREQS.get(i));
@@ -139,7 +143,7 @@ public class crudwindow {
 				for(int x =0; x<saveCODE.size();x++)
 				{
 					System.out.println(saveCODE.get(x));
-				}
+				}*/
 			}
 		});
 		saveButton.setBounds(10, 240, 95, 28);
@@ -169,5 +173,16 @@ public class crudwindow {
 		btnCancel.setBounds(223, 240, 95, 28);
 		btnCancel.setText("Cancel");
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		if(o instanceof reqwindow){
+			System.out.println("reqwindow changed");
+			setChanged();
+			notifyObservers();
+		}
+		
 	}
 }

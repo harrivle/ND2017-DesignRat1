@@ -11,8 +11,8 @@ public class driver {
 		ArtifactLibrary lib = new ArtifactLibrary();
 		
 		try{
-			librarywindow window = new librarywindow();
-			window.open(lib);
+			librarywindow window = new librarywindow(lib);
+			window.open();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
