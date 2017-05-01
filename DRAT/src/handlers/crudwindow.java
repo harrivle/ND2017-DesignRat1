@@ -12,6 +12,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import parser.ArtifactLibrary;
+import parser.XMLParsableArtifact;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
@@ -26,6 +27,7 @@ public class crudwindow extends Observable implements Observer{
 	//String[] requirementList;
 	Vector<String> saveREQS = new Vector<String>();
 	Vector<String> saveCODE = new Vector<String>();
+	int newDesign=0;
 
 	/**
 	 * Launch the application.
@@ -74,7 +76,14 @@ public class crudwindow extends Observable implements Observer{
 		txtDesignName.setBounds(10, 40, 415, 19);
 		
 		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
-		txtDesignDescription.setText(lib.getDesignDesc(items[0]));
+		if(items[1]=="null"){
+			txtDesignDescription.setText("Enter description here");
+			newDesign=1;
+		}
+		else
+		{
+			txtDesignDescription.setText(lib.getDesignDesc(items[0]));
+		}
 		txtDesignDescription.setBounds(10, 65, 415, 135);
 		
 		//put initial requirements into saveREQS
@@ -132,18 +141,17 @@ public class crudwindow extends Observable implements Observer{
 			public void widgetSelected(SelectionEvent e) {
 				String captureText = txtDesignName.getText();
 				String captureDescription= txtDesignDescription.getText();
-				lib.setDesignDesc(captureText, captureDescription);
-				setChanged();
-				notifyObservers();
-				/*System.out.printf("Name: %s Description: %s\n", captureText, captureDescription);
-				for(int i =0; i<saveREQS.size();i++)
-				{
-					System.out.println(saveREQS.get(i));
+				if(newDesign==0){
+					lib.setDesignDesc(captureText, captureDescription);
+					setChanged();
+					notifyObservers();
 				}
-				for(int x =0; x<saveCODE.size();x++)
+				else
 				{
-					System.out.println(saveCODE.get(x));
-				}*/
+					lib.addDesignDecision(captureText, captureDescription);
+					setChanged();
+					notifyObservers();
+				}
 			}
 		});
 		saveButton.setBounds(10, 240, 95, 28);

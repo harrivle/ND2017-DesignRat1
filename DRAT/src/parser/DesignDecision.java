@@ -15,6 +15,11 @@ public class DesignDecision {
 		description = artifact.description;
 	}
 	
+	public DesignDecision(String idinput, String desc){
+		id = idinput;
+		description=desc;
+		
+	}
 	
 	
 	

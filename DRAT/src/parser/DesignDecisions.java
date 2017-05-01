@@ -13,6 +13,10 @@ public class DesignDecisions extends XMLParsableArtifactContainer {
 		fileExtentionName = "DesignDecision.xml";
 
 	}
+	
+	public void addDecision(String id, String desc){
+		map.put(id,new DesignDecision(id,desc));
+	}
 
 	@Override
 	void organizeContents() {
