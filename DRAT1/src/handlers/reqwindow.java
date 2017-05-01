@@ -1,8 +1,11 @@
 package handlers;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,23 +25,21 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.jface.viewers.ListViewer;
 
-public class reqwindow extends Observable{
+public class reqwindow extends Observable {
 
 	protected Shell shell;
 	String[] saveList;
 
 	/**
 	 * Launch the application.
+	 * 
 	 * @param args
 	 */
-	/*public static void main(String[] args) {
-		try {
-			reqwindow window = new reqwindow();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
+	/*
+	 * public static void main(String[] args) { try { reqwindow window = new
+	 * reqwindow(); window.open(); } catch (Exception e) { e.printStackTrace();
+	 * } }
+	 */
 
 	/**
 	 * Open the window.
@@ -57,34 +58,33 @@ public class reqwindow extends Observable{
 
 	/**
 	 * Create contents of the window.
+	 * 
 	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents(ArtifactLibrary lib, String designId) {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
-		
+
 		Label lblReqwindow = new Label(shell, SWT.CENTER);
 		lblReqwindow.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
 		lblReqwindow.setBounds(23, 10, 391, 24);
 		lblReqwindow.setText("Select Requirements for " + designId);
-		
+
 		List wholeList = new List(shell, SWT.BORDER | SWT.V_SCROLL);
 		wholeList.setBounds(23, 47, 142, 221);
 
+		for (Entry<String, String> R : lib.getRequirements().map.entrySet()) {
+			wholeList.add(R.getKey());// + ": " + R.getValue().description);
+		}
 
-	    for(Entry<String, String> R : lib.getRequirements().map.entrySet()) {
-	    	wholeList.add(R.getKey());// + ": " + R.getValue().description);
-	    }
-		
-		
 		List list = new List(shell, SWT.BORDER | SWT.V_SCROLL);
 		list.setBounds(262, 47, 152, 187);
-		
+
 		for (String str : lib.getReqIdList(designId)) {
 			list.add(str);
 		}
-		
+
 		Button moveRightButton = new Button(shell, SWT.CENTER);
 		moveRightButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -95,20 +95,34 @@ public class reqwindow extends Observable{
 		});
 		moveRightButton.setBounds(171, 82, 86, 28);
 		moveRightButton.setText("----->");
-		
+
 		Button button = new Button(shell, SWT.NONE);
 		button.setBounds(171, 174, 86, 28);
 		button.setText("<------");
-		
+
 		Button btnSave = new Button(shell, SWT.NONE);
 		btnSave.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//on save, add items to set and send to library
+				// on save, add items to set and send to library
 				saveList = list.getItems();
 				HashSet<String> saveSet = new HashSet<String>();
-				for(String id : saveList) saveSet.add(id);
+				for (String id : saveList)
+					saveSet.add(id);
 				lib.setReqIdList(designId, saveSet);
+				
+				String libraryFileName = "artifactLibrary.ser";
+				FileOutputStream fos = null;
+                ObjectOutputStream out = null;
+                try {
+                        fos = new FileOutputStream("src/articfacts/" + libraryFileName);
+                        out = new ObjectOutputStream(fos);
+                        out.writeObject(lib);
+
+                        out.close();
+                } catch (Exception ex) {
+                        ex.printStackTrace();
+                }
 				setChanged();
 				notifyObservers();
 				shell.close();
@@ -116,9 +130,9 @@ public class reqwindow extends Observable{
 		});
 		btnSave.setBounds(295, 240, 95, 28);
 		btnSave.setText("Save");
-		button.addSelectionListener(new SelectionAdapter(){
+		button.addSelectionListener(new SelectionAdapter() {
 			@Override
-			public void widgetSelected(SelectionEvent e){
+			public void widgetSelected(SelectionEvent e) {
 				int index2 = list.getSelectionIndex();
 				list.remove(list.getItem(index2));
 			}
