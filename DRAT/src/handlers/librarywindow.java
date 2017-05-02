@@ -103,9 +103,6 @@ public class librarywindow implements Observer{
 				String [] items= item.split(delimeters);
 				crudwindow w1 = new crudwindow();
 				w1.addObserver(o);
-				//w1.createContents(lib,items);
-				//w1.open(lib);
-				//w1.txtDesignName.setText(items[0]);
 				w1.open(lib,items);
 				
 			}
@@ -116,6 +113,18 @@ public class librarywindow implements Observer{
 		Button btnCreateNew = new Button(shell, SWT.NONE);
 		btnCreateNew.setBounds(131, 248, 95, 28);
 		btnCreateNew.setText("Create New");
+		btnCreateNew.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//System.out.println("Got here 1");
+				String[] items ={"Design Name","null"};
+				crudwindow w1 = new crudwindow();
+				//System.out.println("Got here 2");
+				w1.addObserver(o);
+				w1.open(lib,items);
+				
+			}
+		});
 
 	}
 

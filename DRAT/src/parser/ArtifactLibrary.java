@@ -48,6 +48,12 @@ public class ArtifactLibrary {
 	public DesignDecisions getDesignDecisions() {
 		return designDecisions;
 	}
+	public void addDesignDecision(String id, String desc){
+		designDecisions.addDecision(id, desc);
+		designReqLink.map.put(id, new HashSet<String>());
+		System.out.println(designReqLink.map.toString());
+		getReqIdList(id);
+	}
 	
 	public Requirements getRequirements() {
 		return requirements;
@@ -64,6 +70,7 @@ public class ArtifactLibrary {
 	
 	//get requirement set from design id
 	public HashSet<String> getReqIdList(String designDecisionId) {
+		System.out.println(designReqLink.map.get(designDecisionId).toString());
 		return designReqLink.map.get(designDecisionId);
 	}
 	
