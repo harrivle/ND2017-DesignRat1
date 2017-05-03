@@ -31,7 +31,7 @@ public class reqwindow implements Observer {
 	List reqList;
 	ArtifactLibrary lib;
 	
-	reqwindow(ArtifactLibrary lib) {
+	public reqwindow(ArtifactLibrary lib) {
 		this.lib = lib;
 		lib.addObserver(this);
 	}

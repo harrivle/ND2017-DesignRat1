@@ -39,6 +39,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import handlers.librarywindow;
+import handlers.reqlist;
+import handlers.reqwindow;
 
 import org.eclipse.swt.widgets.Text;
 
@@ -144,6 +146,27 @@ public class CodeTagger implements Observer {
 			}		
 		});
 		
+		Button reqButton = new Button(parent, SWT.PUSH);
+		reqButton.setBounds(124, 150, 263, 43);
+		reqButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
+		reqButton.setText("View Requirement Descriptions");
+		reqButton.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(libIsInitialized == 0) return;
+				try{
+					reqlist reqList = new reqlist();
+					reqList.open(lib);
+				} catch (Exception e2){
+					e2.printStackTrace();
+				}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}	
+		});
+			
 	}
 
 	
