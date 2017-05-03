@@ -1,5 +1,13 @@
 package codetaggingtool.parts;
 
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Set;
+
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,7 +42,7 @@ import handlers.librarywindow;
 
 import org.eclipse.swt.widgets.Text;
 
-public class CodeTagger {
+public class CodeTagger implements Observer {
 	private Label myLabelInView;
 	private Text ProjectText;
 	private Text FileText;
@@ -43,6 +51,8 @@ public class CodeTagger {
 	private Text PackageText;
 
 	ArtifactLibrary lib; // = new ArtifactLibrary();
+	List DesignChoiceList;
+	HashMap<String, java.util.List<String>> tagInfo;
 	private Composite tab1Composite;
 	private Composite tab2Composite;
 	
@@ -118,13 +128,10 @@ public class CodeTagger {
 		myLabelInView.setBounds(16, 20, 118, 19);
 		myLabelInView.setText("Design Rationales");
 		
-		List DesignChoiceList = new List(parent, SWT.BORDER);
+		DesignChoiceList = new List(parent, SWT.BORDER);
 		DesignChoiceList.setBounds(10, 45, 134, 223);
 		
 		//add design decisions from library to list
-		for (String id : lib.getDesignDecisions().map.keySet()) {
-			DesignChoiceList.add(id);;
-		}
 		DesignChoiceList.setBounds(10, 45, 124, 223);
 		
 		Label lblNewLabel = new Label(parent, SWT.NONE);
@@ -178,6 +185,25 @@ public class CodeTagger {
 		CommentsBox.setBounds(226, 152, 66, 16);
 		CommentsBox.setBounds(325, 56, 156, 193);
 		
+		updateContent();
+		
+		DesignChoiceList.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String[] choice = DesignChoiceList.getSelection();
+				FileText.setText(tagInfo.get(choice[0]).get(0));
+				MethodText.setText(tagInfo.get(choice[0]).get(1));
+				ProjectText.setText(tagInfo.get(choice[0]).get(2));
+				CommentsBox.setText(tagInfo.get(choice[0]).get(3));
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		// Add buttons here
 		Button tagButton = new Button(parent, SWT.PUSH);
 		tagButton.setBounds(184, 240, 98, 28);
@@ -190,7 +216,7 @@ public class CodeTagger {
 			public void widgetSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 				System.out.println("Button Pushed");
-				ArtifactInfo info = new ArtifactInfo("abc", "def");
+				/*ArtifactInfo info = new ArtifactInfo("abc", "def");
 				
 				String file = FileText.getText();
 				String method = MethodText.getText();
@@ -203,8 +229,15 @@ public class CodeTagger {
 				info.addAttribute(AnnotationConstants.LINE, method);
 				info.addAttribute(AnnotationConstants.PROJECT, project);
 				int choice = DesignChoiceList.getSelectionIndex();
-				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());
-				
+				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());*/
+				if (DesignChoiceList.getSelection()[0] != null) {
+					java.util.List<String> list = new ArrayList();
+					list.add(FileText.getText());
+					list.add(MethodText.getText());
+					list.add(ProjectText.getText());
+					list.add(CommentsBox.getText());
+					lib.setTagInfo(DesignChoiceList.getSelection()[0], list);
+				}
 			}
 			
 			@Override
@@ -302,4 +335,16 @@ public void initializeTags() {
 	EditorUtil.executeAction(info, design, comments);
 	}
 
+	
+	public void updateContent() {
+		tagInfo = lib.getTagInfo();
+		for (String id : tagInfo.keySet()) {
+			DesignChoiceList.add(id);
+		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		updateContent();
+	}
 }
