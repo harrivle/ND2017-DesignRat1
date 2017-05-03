@@ -12,12 +12,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import parser.ArtifactLibrary;
-import parser.XMLParsableArtifact;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.GridData;
 
 public class crudwindow implements Observer {
 	crudwindow o = this;
@@ -29,9 +30,7 @@ public class crudwindow implements Observer {
 	Vector<String> saveCODE = new Vector<String>();
 	int newDesign = 0;
 
-	/**
-	 * Open the window.
-	 */
+	//Open the window.
 	public void open(ArtifactLibrary lib, String[] items) {
 		System.out.println("CRUD");
 		lib.addObserver(this);
@@ -46,26 +45,30 @@ public class crudwindow implements Observer {
 		}
 	}
 
-	/**
-	 * Create contents of the window.
-	 * 
-	 * @wbp.parser.entryPoint
-	 */
+	//Create contents of the window.
 	protected void createContents(ArtifactLibrary lib, String[] items) {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(406, 309);
 		shell.setText("SWT Application");
+		shell.setLayout(new GridLayout(3, false));
+		new Label(shell, SWT.NONE);
 
 		Label lblCrudview = new Label(shell, SWT.NONE);
+		lblCrudview.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblCrudview.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
-		lblCrudview.setBounds(164, 10, 104, 24);
 		lblCrudview.setText("CRUDView");
 
 		txtDesignName = new Text(shell, SWT.BORDER);
+		GridData gd_txtDesignName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
+		gd_txtDesignName.widthHint = 375;
+		txtDesignName.setLayoutData(gd_txtDesignName);
 		txtDesignName.setText(items[0]);
-		txtDesignName.setBounds(10, 40, 415, 19);
 
 		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
+		GridData gd_txtDesignDescription = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
+		gd_txtDesignDescription.heightHint = 111;
+		gd_txtDesignDescription.widthHint = 361;
+		txtDesignDescription.setLayoutData(gd_txtDesignDescription);
 		if (items[1] == "null") {
 			txtDesignDescription.setText("Enter description here");
 			newDesign = 1;
@@ -73,12 +76,36 @@ public class crudwindow implements Observer {
 		else {
 			txtDesignDescription.setText(lib.getDesignDesc(items[0]));
 		}
-		txtDesignDescription.setBounds(10, 65, 415, 135);
 
 		// put initial requirements into saveREQS
 		for (int i = 1; i < items.length; i++) {
 			saveREQS.addElement(items[i]);
 		}
+		new Label(shell, SWT.NONE);
+		new Label(shell, SWT.NONE);
+		new Label(shell, SWT.NONE);
+		new Label(shell, SWT.NONE);
+		new Label(shell, SWT.NONE);
+		new Label(shell, SWT.NONE);
+		
+				Button codeButton = new Button(shell, SWT.NONE);
+				codeButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						codewindow code = new codewindow();
+						code.open(lib, saveCODE);
+						if (code.shell.isDisposed()) {
+							// System.out.println("Window was closed");
+							System.out.println(code.saveList.length);
+							for (int i = 0; i < code.saveList.length; i++) {
+								String x = code.saveList[i];
+								saveCODE.addElement(x);
+							}
+						}
+
+					}
+				});
+				codeButton.setText("View/Edit Code");
 		Button reqButton = new Button(shell, SWT.NONE);
 		reqButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -98,64 +125,41 @@ public class crudwindow implements Observer {
 				}
 			}
 		});
-		reqButton.setBounds(10, 206, 173, 28);
 		reqButton.setText("View/Edit Requirements");
+		new Label(shell, SWT.NONE);
+		
+				Button btnDelete = new Button(shell, SWT.NONE);
+				btnDelete.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
 
-		Button codeButton = new Button(shell, SWT.NONE);
-		codeButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				codewindow code = new codewindow();
-				code.open(lib, saveCODE);
-				if (code.shell.isDisposed()) {
-					// System.out.println("Window was closed");
-					System.out.println(code.saveList.length);
-					for (int i = 0; i < code.saveList.length; i++) {
-						String x = code.saveList[i];
-						saveCODE.addElement(x);
+						txtDesignName.setText("");
+						txtDesignDescription.setText("");
+						saveCODE.clear();
+						saveREQS.clear();
 					}
-				}
-
-			}
-		});
-		codeButton.setBounds(180, 206, 138, 28);
-		codeButton.setText("View/Edit Code");
-
-		// Save Button
-		Button saveButton = new Button(shell, SWT.NONE);
-		saveButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String captureText = txtDesignName.getText();
-				String captureDescription = txtDesignDescription.getText();
-			}
-		});
-		saveButton.setBounds(10, 240, 95, 28);
-		saveButton.setText("Save");
-
-		Button btnDelete = new Button(shell, SWT.NONE);
-		btnDelete.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				txtDesignName.setText("");
-				txtDesignDescription.setText("");
-				saveCODE.clear();
-				saveREQS.clear();
-			}
-		});
-		btnDelete.setBounds(122, 240, 95, 28);
-		btnDelete.setText("Delete");
-
-		Button btnCancel = new Button(shell, SWT.NONE);
-		btnCancel.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				shell.close();
-			}
-		});
-		btnCancel.setBounds(223, 240, 95, 28);
-		btnCancel.setText("Cancel");
+				});
+				btnDelete.setText("Delete");
+		
+				Button btnCancel = new Button(shell, SWT.NONE);
+				btnCancel.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						shell.close();
+					}
+				});
+				btnCancel.setText("Cancel");
+		
+				// Save Button
+				Button saveButton = new Button(shell, SWT.NONE);
+				saveButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						String captureText = txtDesignName.getText();
+						String captureDescription = txtDesignDescription.getText();
+					}
+				});
+				saveButton.setText("Save");
 
 	}
 
