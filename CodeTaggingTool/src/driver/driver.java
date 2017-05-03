@@ -8,7 +8,7 @@ import parser.ArtifactLibrary;
 
 public class driver {
 	public static void main(String [] args) {
-		ArtifactLibrary lib = new ArtifactLibrary();
+		ArtifactLibrary lib = new ArtifactLibrary("DRAT");
 		
 		try{
 			librarywindow window = new librarywindow(lib);

@@ -1,6 +1,5 @@
 package codetaggingtool.parts;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,11 +43,12 @@ import org.eclipse.swt.widgets.Text;
 
 public class CodeTagger implements Observer {
 	private Label myLabelInView;
-	private Text ProjectText;
 	private Text FileText;
 	private Text MethodText;
 	private Text CommentsBox;
 	private Text PackageText;
+	private Text ProjectName;
+	public int libIsInitialized;
 
 	ArtifactLibrary lib; // = new ArtifactLibrary();
 	List DesignChoiceList;
@@ -58,8 +58,7 @@ public class CodeTagger implements Observer {
 	
 	@PostConstruct
 	public void createPartControl(Composite parent) {
-		//make artifact library
-		lib = new ArtifactLibrary();
+		libIsInitialized = 0;
 		
 		System.out.println("Enter in SampleE4View postConstruct");
 		parent.setLayout(null);		
@@ -88,13 +87,22 @@ public class CodeTagger implements Observer {
 		System.out.println("Building the main menu");
 		tab2Composite.setLayout(null);
 		
+		Label projectNameLabel = new Label(parent, SWT.NONE);
+		projectNameLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
+		projectNameLabel.setBounds(0, 10, 360, 15);
+		projectNameLabel.setText("Input name of project before initializing Artifact Library:"); 
+		
+		ProjectName = new Text(parent, SWT.BORDER);
+		ProjectName.setBounds(124, 30, 263, 20);
+		
 		Button launchButton = new Button(parent, SWT.PUSH);
-		launchButton.setBounds(124, 10, 263, 43);
+		launchButton.setBounds(124, 110, 263, 43);
 		launchButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		launchButton.setText("Launch Design Decision Library");
 		launchButton.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				if(libIsInitialized == 0) return;
 				// TODO Auto-generated method stub
 				System.out.println("Launch Button Pushed");
 				try{
@@ -107,60 +115,68 @@ public class CodeTagger implements Observer {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-
 			}
 		});
+		
+		Button startButton = new Button(parent, SWT.PUSH);
+		startButton.setBounds(124, 60, 263, 43);
+		startButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
+		startButton.setText("Initialize Artifact Library");
+		startButton.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(libIsInitialized == 1) return;
+				// TODO Auto-generated method stub
+				System.out.println("Start Button Pushed");
+				try{
+					lib = new ArtifactLibrary(ProjectName.getText());
+					updateContent();
+					libIsInitialized = 1;
+				} catch (Exception e2){
+					e2.printStackTrace();
+				}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}		
+		});
+		
 	}
+
 	
 	public void makeCodeTagger(Composite parent) {
 		System.out.println("Building the code tagger.");
 		tab1Composite.setLayout(null);
 		
 		Label lblNewLabel_3 = new Label(parent, SWT.NONE);
-		//lblNewLabel_3.setBounds(165, 10, 125, 18);
 		lblNewLabel_3.setFont(SWTResourceManager.getFont(".SF NS Text", 14, SWT.NORMAL));
 		lblNewLabel_3.setBounds(165, 18, 150, 28);
 		lblNewLabel_3.setText("Code Tagging Tool");
 		
 		myLabelInView = new Label(parent, SWT.BORDER);
-		myLabelInView.setBounds(5, 43, 106, 16);
 		myLabelInView.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		myLabelInView.setBounds(16, 20, 118, 19);
 		myLabelInView.setText("Design Rationales");
 		
 		DesignChoiceList = new List(parent, SWT.BORDER);
-		DesignChoiceList.setBounds(10, 45, 134, 223);
-		
+		DesignChoiceList.setBounds(10, 45, 134, 223);	
 		//add design decisions from library to list
 		DesignChoiceList.setBounds(10, 45, 124, 223);
 		
-		Label lblNewLabel = new Label(parent, SWT.NONE);
-		lblNewLabel.setBounds(200, 52, 45, 16);
-		lblNewLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
-		lblNewLabel.setBounds(200, 56, 69, 14);
-		lblNewLabel.setText("Project");
-		
-		ProjectText = new Text(parent, SWT.BORDER);
-		ProjectText.setBounds(165, 76, 134, 28);
-		
 		Label lblNewLabel_1 = new Label(parent, SWT.NONE);
-		lblNewLabel_1.setBounds(5, 105, 24, 16);
 		lblNewLabel_1.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		lblNewLabel_1.setBounds(213, 110, 69, 14);
 		lblNewLabel_1.setText("File");
 		
-		PackageText = new Text(parent, SWT.BORDER);
-		//PackageText.setBounds(226, 80, 64, 19);
-		PackageText.setBounds(165, 76, 134, 28);
-		
+		/*PackageText = new Text(parent, SWT.BORDER);
+		PackageText.setBounds(165, 76, 134, 20);
 		Label packageLabel = new Label(parent, SWT.NONE);
-		packageLabel.setBounds(5, 105, 24, 16);
 		packageLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		packageLabel.setBounds(213, 110, 69, 14);
-		packageLabel.setText("File");
+		packageLabel.setText("File");*/
 		
 		FileText = new Text(parent, SWT.BORDER);
-		//FileText.setBounds(226, 104, 64, 19);
 		FileText.setBounds(165, 130, 134, 28);
 		
 		//method box and label
@@ -185,23 +201,19 @@ public class CodeTagger implements Observer {
 		CommentsBox.setBounds(226, 152, 66, 16);
 		CommentsBox.setBounds(325, 56, 156, 193);
 		
-		updateContent();
-		
-		DesignChoiceList.addSelectionListener(new SelectionListener() {
-			
+	
+		DesignChoiceList.addSelectionListener(new SelectionListener() {		
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String[] choice = DesignChoiceList.getSelection();
 				FileText.setText(tagInfo.get(choice[0]).get(0));
 				MethodText.setText(tagInfo.get(choice[0]).get(1));
-				ProjectText.setText(tagInfo.get(choice[0]).get(2));
+				ProjectName.setText(tagInfo.get(choice[0]).get(2));
 				CommentsBox.setText(tagInfo.get(choice[0]).get(3));
-			}
-			
+			}	
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub		
 			}
 		});
 		// Add buttons here
@@ -214,13 +226,14 @@ public class CodeTagger implements Observer {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				if(libIsInitialized == 0) return;
 				// TODO Auto-generated method stub
 				System.out.println("Button Pushed");
-				/*ArtifactInfo info = new ArtifactInfo("abc", "def");
+				ArtifactInfo info = new ArtifactInfo("abc", "def");
 				
 				String file = FileText.getText();
 				String method = MethodText.getText();
-				String project = ProjectText.getText();
+				String project = ProjectName.getText();
 				// String package = PackageText.getText();
 				
 				//lib.addCodeTag(file, method, project);
@@ -229,12 +242,12 @@ public class CodeTagger implements Observer {
 				info.addAttribute(AnnotationConstants.LINE, method);
 				info.addAttribute(AnnotationConstants.PROJECT, project);
 				int choice = DesignChoiceList.getSelectionIndex();
-				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());*/
+				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());
 				if (DesignChoiceList.getSelection()[0] != null) {
 					java.util.List<String> list = new ArrayList();
 					list.add(FileText.getText());
 					list.add(MethodText.getText());
-					list.add(ProjectText.getText());
+					list.add(ProjectName.getText());
 					list.add(CommentsBox.getText());
 					lib.setTagInfo(DesignChoiceList.getSelection()[0], list);
 				}
@@ -326,16 +339,15 @@ public void initializeTags() {
 	String project = "";
 	String file = "";
 	String method = "";
-	String pack = "";
+	//String pack = "";
 	String comments = "";
 	info.addAttribute(AnnotationConstants.FILE, file);
 	info.addAttribute(AnnotationConstants.LINE, method);
 	info.addAttribute(AnnotationConstants.PROJECT, project);
 
 	EditorUtil.executeAction(info, design, comments);
-	}
+}
 
-	
 	public void updateContent() {
 		tagInfo = lib.getTagInfo();
 		for (String id : tagInfo.keySet()) {

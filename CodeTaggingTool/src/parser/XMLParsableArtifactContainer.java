@@ -18,8 +18,8 @@ public abstract class XMLParsableArtifactContainer {
 	public XMLParsableArtifactContainer() {
 	}
 
-	public void performParse() {
-		prepareFilePathName();
+	public void performParse(String artifactPath) {
+		prepareFilePathName(artifactPath);
 
 		try {
 			XMLParser xmlParser = new XMLParser(filePathName, artifactName, artifactPlural);
@@ -31,24 +31,13 @@ public abstract class XMLParsableArtifactContainer {
 		}
 	}
 
-	public void prepareFilePathName() {
-		// String absolutePathH =
-		// "/home/harrison/EclipseProjects/DRAT/src/artifacts/";
-		// String absolutePathT =
-		// "/Users/troyprince/git/ND2017-DRAT1/DRAT/src/artifacts/";
-		String relativePath = "src/artifacts/" + fileExtentionName;
+	public void prepareFilePathName(String artifactPath) {
+		// String absolutePathH ="/home/harrison/EclipseProjects/DRAT/src/artifacts/";
+		//String absolutePathT = "/Users/troyprince/git/ND2017-DRAT1/DRAT/src/artifacts/";
+		//String DRATrelativePath = "src/artifacts/" + fileExtentionName;
 		// how you would find plugin path:
-		// String workspacePath =
-		// ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-		// String relativePath =
-		// workspacePath.replaceAll("runtime-EclipseApplication",
-		// "/git/ND2017-DRAT1/DRAT/src/drat1/artifacts/");
-		// This gets us to the relative path of DRAT for all of us
-		// But, we are going to later have to change it so that it is working
-		// for the user's plugin
-		// The files will be in the launched eclipses's workspace so thats
-		// tricky
-		filePathName = relativePath;
+		// String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
+		filePathName = artifactPath + fileExtentionName;
 		// filePathName = absolutePathT;
 	}
 

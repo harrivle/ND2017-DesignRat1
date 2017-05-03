@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
+
+import org.eclipse.core.resources.ResourcesPlugin;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -31,24 +34,34 @@ public class ArtifactLibrary extends Observable {
 	File reqFile;
 	File designReqFile;
 	File tagInfoFile;
+	String artifactPath;
 
 	private ArtifactContainerFactory factory;
 
 	private static ArtifactLibrary instance = null;
 
-	public ArtifactLibrary() {
+	public ArtifactLibrary(String projectName) {
+		
 		factory = new ArtifactContainerFactory();
-		designDecFile = new File("src/artifacts/designDecisions.ser");
-		reqFile = new File("src/artifacts/Requirements.ser");
-		designReqFile = new File("src/artifacts/DesignRequirementLinks.ser");
-		tagInfoFile = new File("src/artifacts/TagInfo.ser");
+		
+		String workspacePath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
+		System.out.println(workspacePath);
+		
+		artifactPath = workspacePath + "/" + projectName + "/src/artifacts/";
+		System.out.println(artifactPath);
+		
+		designDecFile = new File(artifactPath + "designDecisions.ser");
+		reqFile = new File(artifactPath + "Requirements.ser");
+		designReqFile = new File(artifactPath + "DesignRequirementLinks.ser");
+		tagInfoFile = new File(artifactPath + "TagInfo.ser");
+		
 		// Exists only to defeat instantiation.
 		if (designDecFile.exists() && designDecFile.isFile()) {
 			System.out.println(designDecFile.exists());
 			FileInputStream fis = null;
             ObjectInputStream in = null;
             try {
-            	fis = new FileInputStream("src/artifects/designDecisions.ser");
+            	fis = new FileInputStream(artifactPath + "designDecisions.ser");
             	in = new ObjectInputStream(fis);
             	designDecisions = (DesignDecisions) in.readObject();
                     in.close();
@@ -63,7 +76,7 @@ public class ArtifactLibrary extends Observable {
 			FileInputStream fis = null;
             ObjectInputStream in = null;
             try {
-            	fis = new FileInputStream("src/artifacts/Requirements.ser");
+            	fis = new FileInputStream(artifactPath + "Requirements.ser");
             	in = new ObjectInputStream(fis);
             	requirements = (Requirements) in.readObject();
                     in.close();
@@ -79,7 +92,7 @@ public class ArtifactLibrary extends Observable {
 			FileInputStream fis = null;
             ObjectInputStream in = null;
             try {
-            	fis = new FileInputStream("src/artifacts/DesignRequirementLinks.ser");
+            	fis = new FileInputStream(artifactPath + "DesignRequirementLinks.ser");
             	in = new ObjectInputStream(fis);
             	designReqLink = (DesignRequirementLink) in.readObject();
             	in.close();
@@ -94,7 +107,7 @@ public class ArtifactLibrary extends Observable {
 			FileInputStream fis = null;
             ObjectInputStream in = null;
             try {
-            	fis = new FileInputStream("src/artifacts/TagInfo.ser");
+            	fis = new FileInputStream(artifactPath + "TagInfo.ser");
             	in = new ObjectInputStream(fis);
             	tagInfo = (HashMap<String, List<String>>) in.readObject();
             	in.close();
@@ -108,9 +121,9 @@ public class ArtifactLibrary extends Observable {
 		testWithDisplay();
 	}
 
-	public static ArtifactLibrary getInstance() {
+	public static ArtifactLibrary getInstance(String projectName) {
 		if (instance == null) {
-			instance = new ArtifactLibrary();
+			instance = new ArtifactLibrary(projectName);
 		}
 		return instance;
 	}
@@ -118,10 +131,11 @@ public class ArtifactLibrary extends Observable {
 	public XMLParsableArtifactContainer getArtifacts(String type) {
 		XMLParsableArtifactContainer container;
 		container = factory.getXMLArtifacts(type);
-		container.performParse();
+		container.performParse(artifactPath);
 		container.organizeContents();
 		return container;
 	}
+	
 
 	public DesignDecisions getDesignDecisions() {
 		return designDecisions;
@@ -164,7 +178,7 @@ public class ArtifactLibrary extends Observable {
 		FileOutputStream fos = null;
         ObjectOutputStream out = null;
         try {
-                fos = new FileOutputStream("src/artifacts/DesignRequirementLinks.ser");
+                fos = new FileOutputStream(artifactPath + "DesignRequirementLinks.ser");
                 out = new ObjectOutputStream(fos);
                 out.writeObject(designReqLink);
 
@@ -188,7 +202,7 @@ public class ArtifactLibrary extends Observable {
 		FileOutputStream fos = null;
         ObjectOutputStream out = null;
         try {
-                fos = new FileOutputStream("src/artifacts/designDecisions.ser");
+                fos = new FileOutputStream(artifactPath + "designDecisions.ser");
                 out = new ObjectOutputStream(fos);
                 out.writeObject(designDecisions);
 
@@ -218,7 +232,7 @@ public class ArtifactLibrary extends Observable {
 		FileOutputStream fos = null;
         ObjectOutputStream out = null;
         try {
-                fos = new FileOutputStream("src/artifacts/TagInfo.ser");
+                fos = new FileOutputStream(artifactPath + "TagInfo.ser");
                 out = new ObjectOutputStream(fos);
                 out.writeObject(tagInfo);
 

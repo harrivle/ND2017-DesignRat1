@@ -18,13 +18,14 @@ public class XMLParser {
 
 	XMLInputFactory factory;
 	XMLStreamReader reader;
-	//File xmlFile;    //file to read from
+	File xmlFile;    //file to read from
 	String singular; //name of artifact to be parsed
 	String plural;   //plural version of artifact to be parsed
 	
 	XMLParser(String filename, String Singular, String Plural) throws FileNotFoundException, XMLStreamException {
 		
-		File xmlFile = new File(filename);
+		System.out.println("About to open file: " + filename);
+		xmlFile = new File(filename);
 		InputStream is = new FileInputStream(xmlFile);
 		factory = XMLInputFactory.newInstance();
 		reader = factory.createXMLStreamReader(is);
