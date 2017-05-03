@@ -4,9 +4,9 @@ public class Requirement {
 
 	public String id;
 	public String description;
-	
+
 	Requirement() {
-		
+
 	}
 
 	public Requirement(XMLParsableArtifact artifact) {
