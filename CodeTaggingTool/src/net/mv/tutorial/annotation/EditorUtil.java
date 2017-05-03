@@ -19,7 +19,6 @@ import org.eclipse.ui.part.FileEditorInput;
 
 public class EditorUtil {
 
-
 	public static void executeAction(final ArtifactInfo info, String DesignChoice, String Comments) {
 		String project = info.getAttribute(AnnotationConstants.PROJECT);
 		final String line = info.getAttribute(AnnotationConstants.LINE);
@@ -35,7 +34,7 @@ public class EditorUtil {
 		String packageName = project.replace('.', '/');
 
 		final IFile javaFile = myWebProject
-				.getFile(sourceFolder + "/" /*+ packageName + "/"*/ + file.replace('.', '/') + ".java");
+				.getFile(sourceFolder + "/" /*+ package + "/"*/ + file.replace('.', '/') + ".java");
 
 		if (!javaFile.exists()) {
 			System.err.println("Error  - File not found " + javaFile.getRawLocation().toOSString());

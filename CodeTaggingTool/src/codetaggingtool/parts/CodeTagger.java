@@ -1,9 +1,5 @@
 package codetaggingtool.parts;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -44,6 +40,7 @@ public class CodeTagger {
 	private Text FileText;
 	private Text MethodText;
 	private Text CommentsBox;
+	private Text PackageText;
 
 	ArtifactLibrary lib; // = new ArtifactLibrary();
 	private Composite tab1Composite;
@@ -110,34 +107,33 @@ public class CodeTagger {
 		tab1Composite.setLayout(null);
 		
 		Label lblNewLabel_3 = new Label(parent, SWT.NONE);
-		lblNewLabel_3.setBounds(5, 5, 125, 18);
+		//lblNewLabel_3.setBounds(165, 10, 125, 18);
 		lblNewLabel_3.setFont(SWTResourceManager.getFont(".SF NS Text", 14, SWT.NORMAL));
 		lblNewLabel_3.setBounds(165, 18, 150, 28);
 		lblNewLabel_3.setText("Code Tagging Tool");
 		
-				myLabelInView = new Label(parent, SWT.BORDER);
-				myLabelInView.setBounds(5, 43, 106, 16);
-				myLabelInView.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
-				myLabelInView.setBounds(16, 20, 118, 19);
-				myLabelInView.setText("Design Rationales");
+		myLabelInView = new Label(parent, SWT.BORDER);
+		myLabelInView.setBounds(5, 43, 106, 16);
+		myLabelInView.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
+		myLabelInView.setBounds(16, 20, 118, 19);
+		myLabelInView.setText("Design Rationales");
 		
 		List DesignChoiceList = new List(parent, SWT.BORDER);
 		DesignChoiceList.setBounds(10, 45, 134, 223);
-		//ArrayList<String> S = new ArrayList<>();
+		
+		//add design decisions from library to list
 		for (String id : lib.getDesignDecisions().map.keySet()) {
 			DesignChoiceList.add(id);;
 		}
-		//DesignChoiceList.setItem(S);
 		DesignChoiceList.setBounds(10, 45, 124, 223);
 		
 		Label lblNewLabel = new Label(parent, SWT.NONE);
-		lblNewLabel.setBounds(5, 81, 45, 16);
+		lblNewLabel.setBounds(200, 52, 45, 16);
 		lblNewLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		lblNewLabel.setBounds(200, 56, 69, 14);
 		lblNewLabel.setText("Project");
 		
 		ProjectText = new Text(parent, SWT.BORDER);
-		ProjectText.setBounds(226, 80, 64, 19);
 		ProjectText.setBounds(165, 76, 134, 28);
 		
 		Label lblNewLabel_1 = new Label(parent, SWT.NONE);
@@ -146,10 +142,21 @@ public class CodeTagger {
 		lblNewLabel_1.setBounds(213, 110, 69, 14);
 		lblNewLabel_1.setText("File");
 		
+		PackageText = new Text(parent, SWT.BORDER);
+		//PackageText.setBounds(226, 80, 64, 19);
+		PackageText.setBounds(165, 76, 134, 28);
+		
+		Label packageLabel = new Label(parent, SWT.NONE);
+		packageLabel.setBounds(5, 105, 24, 16);
+		packageLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
+		packageLabel.setBounds(213, 110, 69, 14);
+		packageLabel.setText("File");
+		
 		FileText = new Text(parent, SWT.BORDER);
-		FileText.setBounds(226, 104, 64, 19);
+		//FileText.setBounds(226, 104, 64, 19);
 		FileText.setBounds(165, 130, 134, 28);
 		
+		//method box and label
 		Label lblNewLabel_2 = new Label(parent, SWT.NONE);
 		lblNewLabel_2.setBounds(5, 129, 48, 16);
 		lblNewLabel_2.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
@@ -160,6 +167,7 @@ public class CodeTagger {
 		MethodText.setBounds(226, 128, 64, 19);
 		MethodText.setBounds(165, 181, 134, 28);
 		
+		//comment box and label
 		Label lblComment = new Label(parent, SWT.NONE);
 		lblComment.setBounds(5, 152, 65, 16);
 		lblComment.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
@@ -170,10 +178,9 @@ public class CodeTagger {
 		CommentsBox.setBounds(226, 152, 66, 16);
 		CommentsBox.setBounds(325, 56, 156, 193);
 		
-		
 		// Add buttons here
 		Button tagButton = new Button(parent, SWT.PUSH);
-		tagButton.setBounds(135, 173, 86, 28);
+		tagButton.setBounds(184, 240, 98, 28);
 		tagButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		tagButton.setText("Tag Code");
 		tagButton.setBounds(184, 227, 98, 41);
@@ -184,9 +191,17 @@ public class CodeTagger {
 				// TODO Auto-generated method stub
 				System.out.println("Button Pushed");
 				ArtifactInfo info = new ArtifactInfo("abc", "def");
-				info.addAttribute(AnnotationConstants.FILE, FileText.getText());
-				info.addAttribute(AnnotationConstants.LINE, MethodText.getText());
-				info.addAttribute(AnnotationConstants.PROJECT, ProjectText.getText());
+				
+				String file = FileText.getText();
+				String method = MethodText.getText();
+				String project = ProjectText.getText();
+				// String package = PackageText.getText();
+				
+				//lib.addCodeTag(file, method, project);
+				
+				info.addAttribute(AnnotationConstants.FILE, file);
+				info.addAttribute(AnnotationConstants.LINE, method);
+				info.addAttribute(AnnotationConstants.PROJECT, project);
 				int choice = DesignChoiceList.getSelectionIndex();
 				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());
 				
@@ -270,4 +285,21 @@ public class CodeTagger {
 		if (myLabelInView != null)
 			myLabelInView.setText("This is a multiple selection of " + selectedObjects.length + " objects");
 	}
+
+
+public void initializeTags() {
+	ArtifactInfo info = new ArtifactInfo("abc", "def");
+	String design = "";
+	String project = "";
+	String file = "";
+	String method = "";
+	String pack = "";
+	String comments = "";
+	info.addAttribute(AnnotationConstants.FILE, file);
+	info.addAttribute(AnnotationConstants.LINE, method);
+	info.addAttribute(AnnotationConstants.PROJECT, project);
+
+	EditorUtil.executeAction(info, design, comments);
+	}
+
 }
