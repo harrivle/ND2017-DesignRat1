@@ -167,8 +167,12 @@ public class ArtifactLibrary extends Observable {
 
 	// get requirement set from design id
 	public HashSet<String> getReqIdList(String designDecisionId) {
-		System.out.println(designReqLink.map.get(designDecisionId).toString());
-		return designReqLink.map.get(designDecisionId);
+		if (designReqLink.map.get(designDecisionId) != null) {
+			//System.out.println(designReqLink.map.get(designDecisionId).toString());
+			return designReqLink.map.get(designDecisionId);
+		} else {
+			return new HashSet<String>();
+		}
 	}
 
 	// set requirement list given design id and new list

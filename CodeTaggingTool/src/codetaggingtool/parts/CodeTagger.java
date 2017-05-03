@@ -49,7 +49,7 @@ public class CodeTagger implements Observer {
 	private Text FileText;
 	private Text MethodText;
 	private Text CommentsBox;
-	private Text PackageText;
+	//private Text PackageText;
 	private Text ProjectName;
 	public int libIsInitialized;
 
@@ -170,6 +170,7 @@ public class CodeTagger implements Observer {
 	}
 
 	
+	
 	public void makeCodeTagger(Composite parent) {
 		System.out.println("Building the code tagger.");
 		tab1Composite.setLayout(null);
@@ -252,6 +253,7 @@ public class CodeTagger implements Observer {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(libIsInitialized == 0) return;
+				// TODO Auto-generated method stub
 				System.out.println("Button Pushed");
 				ArtifactInfo info = new ArtifactInfo("abc", "def");
 				
@@ -260,14 +262,13 @@ public class CodeTagger implements Observer {
 				String project = ProjectName.getText();
 				// String package = PackageText.getText();
 				
+				//lib.addCodeTag(file, method, project);
+				
 				info.addAttribute(AnnotationConstants.FILE, file);
 				info.addAttribute(AnnotationConstants.LINE, method);
 				info.addAttribute(AnnotationConstants.PROJECT, project);
-				//if (DesignChoiceList != null) {
 				int choice = DesignChoiceList.getSelectionIndex();
 				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());
-				//}
-				
 				if (DesignChoiceList.getSelection()[0] != null) {
 					java.util.List<String> list = new ArrayList();
 					list.add(FileText.getText());

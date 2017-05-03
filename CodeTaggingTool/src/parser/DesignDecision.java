@@ -2,7 +2,7 @@ package parser;
 
 import java.io.Serializable;
 
-public class DesignDecision implements Serializable {
+public class DesignDecision {
 
 	String id;
 	String description;
