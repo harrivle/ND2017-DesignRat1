@@ -1,9 +1,10 @@
 package parser;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class DesignRequirementLink extends XMLParsableArtifactContainer {
+public class DesignRequirementLink extends XMLParsableArtifactContainer implements Serializable {
 
 	private HashSet<String> designIds = new HashSet<String>();
 	public HashMap<String, HashSet<String>> map = new HashMap<String, HashSet<String>>();

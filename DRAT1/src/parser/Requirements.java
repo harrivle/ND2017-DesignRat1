@@ -1,8 +1,9 @@
 package parser;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Requirements extends XMLParsableArtifactContainer {
+public class Requirements extends XMLParsableArtifactContainer implements Serializable {
 
 	public HashMap<String, String> map = new HashMap<String, String>();
 

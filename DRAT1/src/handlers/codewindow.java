@@ -4,6 +4,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.List;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Vector;
 
 import org.eclipse.swt.SWT;
@@ -16,26 +18,16 @@ import parser.ArtifactLibrary;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class codewindow {
-
+public class codewindow implements Observer {
 	protected Shell shell;
 	String[] saveList;
-
-	/**
-	 * Launch the application.
-	 * 
-	 * @param args
-	 */
-	/*
-	 * public static void main(String[] args) { try { codewindow window = new
-	 * codewindow(); window.open(); } catch (Exception e) { e.printStackTrace();
-	 * } }
-	 */
 
 	/**
 	 * Open the window.
 	 */
 	public void open(ArtifactLibrary lib, Vector<String> vec) {
+		System.out.println("Code");
+		lib.addObserver(this);
 		Display display = Display.getDefault();
 		createContents(lib, vec);
 		shell.open();
@@ -106,6 +98,12 @@ public class codewindow {
 			}
 		});
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -22,30 +22,20 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 public class librarywindow implements Observer {
-
-	public librarywindow(ArtifactLibrary lib1) {
-		lib = lib1;
-	}
-
-	ArtifactLibrary lib;
-	librarywindow o = this;
 	protected Shell shell;
+	ArtifactLibrary lib;
 	List LibraryList;
-	/**
-	 * Launch the application.
-	 * 
-	 * @param args
-	 */
-	/*
-	 * public static void main(String[] args) { try { librarywindow window = new
-	 * librarywindow(); window.open(); } catch (Exception e) {
-	 * e.printStackTrace(); } }
-	 */
 
+	public librarywindow(ArtifactLibrary lib) {
+		this.lib = lib;
+		lib.addObserver(this);
+	}
+	
 	/**
 	 * Open the window.
 	 */
-	public void open() {// ArtifactLibrary lib) {
+	public void open() {
+		System.out.println("LIB");
 		Display display = Display.getDefault();
 		createContents();
 		shell.open();
@@ -62,7 +52,7 @@ public class librarywindow implements Observer {
 	 * 
 	 * @wbp.parser.entryPoint
 	 */
-	protected void createContents() {// ArtifactLibrary lib) {
+	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(450, 300);
 		shell.setText("SWT Application");
@@ -71,23 +61,7 @@ public class librarywindow implements Observer {
 		LibraryList = new List(shell, SWT.BORDER | SWT.V_SCROLL);
 		LibraryList.setBounds(10, 51, 426, 191);
 
-		// add stuff to list from library
-		// int i=0;
-		// Iterator it = lib.getDesignReqLink().map.entrySet().iterator();
-
-		/*
-		 * while (it.hasNext()) { Map.Entry pair = (Map.Entry)it.next();
-		 * LibraryList.add(pair.getKey().toString()+" "+pair.getValue().toString
-		 * (), i++); it.remove(); }
-		 */
-
-		for (Entry<String, HashSet<String>> R : lib.getDesignReqLink().map.entrySet()) {
-			LibraryList.add(R.getKey().toString() + " " + R.getValue().toString());// +
-																					// ":
-																					// "
-																					// +
-																					// R.getValue().description);
-		}
+		updateLibraryList();
 
 		Label titleLabel = new Label(shell, SWT.CENTER);
 		titleLabel.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
@@ -105,41 +79,39 @@ public class librarywindow implements Observer {
 				item = item.replace("]", "");
 				String[] items = item.split(delimeters);
 				crudwindow w1 = new crudwindow();
-				w1.addObserver(o);
-				// w1.createContents(lib,items);
-				// w1.open(lib);
-				// w1.txtDesignName.setText(items[0]);
 				w1.open(lib, items);
-
 			}
 		});
+		
 		btnViewedit.setBounds(10, 248, 95, 28);
 		btnViewedit.setText("View/Edit");
 
 		Button btnCreateNew = new Button(shell, SWT.NONE);
 		btnCreateNew.setBounds(131, 248, 95, 28);
 		btnCreateNew.setText("Create New");
+		btnCreateNew.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String[] items = { "Design Name", "null" };
+				crudwindow w1 = new crudwindow();
+				w1.open(lib, items);
 
+			}
+		});
+
+	}
+	
+	public void updateLibraryList() {
+		LibraryList.removeAll();
+		for (Entry<String, HashSet<String>> R : lib.getDesignReqLink().map.entrySet()) {
+			LibraryList.add(R.getKey().toString() + " " + R.getValue().toString());
+		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		// if(o instanceof reqwindow){
-		// System.out.println("reqwindow change");
-		// }
-		if (o instanceof crudwindow) {
-			// System.out.println("crudwindow changed");
-			LibraryList.removeAll();
-			// ArtifactLibrary libNew = new ArtifactLibrary();
-			for (Entry<String, HashSet<String>> R : lib.getDesignReqLink().map.entrySet()) {
-				LibraryList.add(R.getKey().toString() + " " + R.getValue().toString());// +
-																						// ":
-																						// "
-																						// +
-																						// R.getValue().description);
-			}
-
+		if (o instanceof ArtifactLibrary) {
+			updateLibraryList();
 		}
 
 	}

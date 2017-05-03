@@ -1,8 +1,9 @@
 package parser;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class DesignDecisions extends XMLParsableArtifactContainer {
+public class DesignDecisions extends XMLParsableArtifactContainer implements Serializable {
 
 	HashMap<String, DesignDecision> map = new HashMap<String, DesignDecision>();
 
@@ -12,6 +13,10 @@ public class DesignDecisions extends XMLParsableArtifactContainer {
 		artifactPlural = "DesignDecisions";
 		fileExtentionName = "DesignDecision.xml";
 
+	}
+
+	public void addDecision(String id, String desc) {
+		map.put(id, new DesignDecision(id, desc));
 	}
 
 	@Override

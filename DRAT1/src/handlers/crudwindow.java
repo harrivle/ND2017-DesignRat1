@@ -12,13 +12,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import parser.ArtifactLibrary;
+import parser.XMLParsableArtifact;
 
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-public class crudwindow extends Observable implements Observer {
+public class crudwindow implements Observer {
 	crudwindow o = this;
 	protected Shell shell;
 	public Text txtDesignName;
@@ -26,22 +27,14 @@ public class crudwindow extends Observable implements Observer {
 	// String[] requirementList;
 	Vector<String> saveREQS = new Vector<String>();
 	Vector<String> saveCODE = new Vector<String>();
-
-	/**
-	 * Launch the application.
-	 * 
-	 * @param args
-	 */
-	/*
-	 * public static void main(String[] args) { try { crudwindow window = new
-	 * crudwindow(); window.open(); } catch (Exception e) { e.printStackTrace();
-	 * } }
-	 */
+	int newDesign = 0;
 
 	/**
 	 * Open the window.
 	 */
 	public void open(ArtifactLibrary lib, String[] items) {
+		System.out.println("CRUD");
+		lib.addObserver(this);
 		Display display = Display.getDefault();
 		createContents(lib, items);
 		shell.open();
@@ -73,7 +66,13 @@ public class crudwindow extends Observable implements Observer {
 		txtDesignName.setBounds(10, 40, 415, 19);
 
 		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
-		txtDesignDescription.setText(lib.getDesignDesc(items[0]));
+		if (items[1] == "null") {
+			txtDesignDescription.setText("Enter description here");
+			newDesign = 1;
+		}
+		else {
+			txtDesignDescription.setText(lib.getDesignDesc(items[0]));
+		}
 		txtDesignDescription.setBounds(10, 65, 415, 135);
 
 		// put initial requirements into saveREQS
@@ -84,16 +83,17 @@ public class crudwindow extends Observable implements Observer {
 		reqButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				reqwindow req = new reqwindow();
+				reqwindow req = new reqwindow(lib);
 				// System.out.println(items[0]);
-				req.addObserver(o);
 				req.open(lib, items[0]);
 				if (req.shell.isDisposed()) {
 					System.out.println("Window was closed");
-					System.out.println(req.saveList.length);
-					for (int i = 0; i < req.saveList.length; i++) {
-						String x = req.saveList[i];
-						saveREQS.addElement(x);
+					if (req.saveList != null) {
+						System.out.println(req.saveList.length);
+						for (int i = 0; i < req.saveList.length; i++) {
+							String x = req.saveList[i];
+							saveREQS.addElement(x);
+						}
 					}
 				}
 			}
@@ -128,16 +128,6 @@ public class crudwindow extends Observable implements Observer {
 			public void widgetSelected(SelectionEvent e) {
 				String captureText = txtDesignName.getText();
 				String captureDescription = txtDesignDescription.getText();
-				lib.setDesignDesc(captureText, captureDescription);
-				setChanged();
-				notifyObservers();
-				/*
-				 * System.out.printf("Name: %s Description: %s\n", captureText,
-				 * captureDescription); for(int i =0; i<saveREQS.size();i++) {
-				 * System.out.println(saveREQS.get(i)); } for(int x =0;
-				 * x<saveCODE.size();x++) { System.out.println(saveCODE.get(x));
-				 * }
-				 */
 			}
 		});
 		saveButton.setBounds(10, 240, 95, 28);
@@ -172,11 +162,5 @@ public class crudwindow extends Observable implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		if (o instanceof reqwindow) {
-			System.out.println("reqwindow changed");
-			setChanged();
-			notifyObservers();
-		}
-
 	}
 }
