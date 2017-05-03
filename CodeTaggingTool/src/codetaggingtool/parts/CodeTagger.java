@@ -13,6 +13,7 @@ import javax.inject.Named;
 import org.eclipse.e4.core.di.annotations.Optional;
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.e4.ui.services.IServiceConstants;
+import org.eclipse.jdt.internal.compiler.util.Util;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.SWT;
@@ -131,6 +132,7 @@ public class CodeTagger implements Observer {
 				try{
 					lib = new ArtifactLibrary(ProjectName.getText());
 					updateContent();
+					initializeTags();
 					libIsInitialized = 1;
 				} catch (Exception e2){
 					e2.printStackTrace();
@@ -334,18 +336,19 @@ public class CodeTagger implements Observer {
 
 
 public void initializeTags() {
-	ArtifactInfo info = new ArtifactInfo("abc", "def");
-	String design = "";
-	String project = "";
-	String file = "";
-	String method = "";
-	//String pack = "";
-	String comments = "";
-	info.addAttribute(AnnotationConstants.FILE, file);
-	info.addAttribute(AnnotationConstants.LINE, method);
-	info.addAttribute(AnnotationConstants.PROJECT, project);
-
-	EditorUtil.executeAction(info, design, comments);
+	for(String design : lib.getTagInfo().keySet()) {
+		java.util.List<String> contents = lib.getTagInfo().get(design);
+	//for(<String, java.util.List<String>> contents : lib.getTagInfo()) {
+		ArtifactInfo info = new ArtifactInfo("abc", "def");
+		String file = contents.get(0);
+		String method = contents.get(1);
+		//String pack = "";
+		String comments = contents.get(3);
+		info.addAttribute(AnnotationConstants.FILE, file);
+		info.addAttribute(AnnotationConstants.LINE, method);
+		info.addAttribute(AnnotationConstants.PROJECT, ProjectName.getText());
+		EditorUtil.executeAction(info, design, comments);
+	}
 }
 
 	public void updateContent() {
