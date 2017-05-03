@@ -30,7 +30,7 @@ public class librarywindow implements Observer {
 		this.lib = lib;
 		lib.addObserver(this);
 	}
-	
+
 	/**
 	 * Open the window.
 	 */
@@ -82,7 +82,7 @@ public class librarywindow implements Observer {
 				w1.open(lib, items);
 			}
 		});
-		
+
 		btnViewedit.setBounds(10, 248, 95, 28);
 		btnViewedit.setText("View/Edit");
 
@@ -100,7 +100,7 @@ public class librarywindow implements Observer {
 		});
 
 	}
-	
+
 	public void updateLibraryList() {
 		LibraryList.removeAll();
 		for (Entry<String, HashSet<String>> R : lib.getDesignReqLink().map.entrySet()) {

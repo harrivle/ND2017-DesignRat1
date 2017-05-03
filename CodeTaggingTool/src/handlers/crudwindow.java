@@ -58,28 +58,30 @@ public class crudwindow implements Observer {
 		lblCrudview.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
 		lblCrudview.setText("CRUDView");
 
-		txtDesignName = new Text(shell, SWT.BORDER);
-		GridData gd_txtDesignName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_txtDesignName.widthHint = 375;
-		txtDesignName.setLayoutData(gd_txtDesignName);
-		txtDesignName.setText(items[0]);
+		if (items[0] != null) {
+			txtDesignName = new Text(shell, SWT.BORDER);
+			GridData gd_txtDesignName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
+			gd_txtDesignName.widthHint = 375;
+			txtDesignName.setLayoutData(gd_txtDesignName);
+			txtDesignName.setText(items[0]);
 
-		txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
-		GridData gd_txtDesignDescription = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
-		gd_txtDesignDescription.heightHint = 111;
-		gd_txtDesignDescription.widthHint = 361;
-		txtDesignDescription.setLayoutData(gd_txtDesignDescription);
-		if (items[1] == "null") {
-			txtDesignDescription.setText("Enter description here");
-			newDesign = 1;
-		}
-		else {
-			txtDesignDescription.setText(lib.getDesignDesc(items[0]));
-		}
+			txtDesignDescription = new Text(shell, SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.MULTI);
+			GridData gd_txtDesignDescription = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
+			gd_txtDesignDescription.heightHint = 111;
+			gd_txtDesignDescription.widthHint = 361;
+			txtDesignDescription.setLayoutData(gd_txtDesignDescription);
+			if (items.length > 1 && items[1] == "null") {
+				txtDesignDescription.setText("Enter description here");
+				newDesign = 1;
+			}
+			else {
+				txtDesignDescription.setText(lib.getDesignDesc(items[0]));
+			}
 
-		// put initial requirements into saveREQS
-		for (int i = 1; i < items.length; i++) {
-			saveREQS.addElement(items[i]);
+			// put initial requirements into saveREQS
+			for (int i = 1; i < items.length; i++) {
+				saveREQS.addElement(items[i]);
+			}
 		}
 		new Label(shell, SWT.NONE);
 		new Label(shell, SWT.NONE);
@@ -157,6 +159,11 @@ public class crudwindow implements Observer {
 					public void widgetSelected(SelectionEvent e) {
 						String captureText = txtDesignName.getText();
 						String captureDescription = txtDesignDescription.getText();
+						if(newDesign ==0) {
+							lib.setDesignDesc(captureText, captureDescription);
+						} else {
+							lib.addDesignDecision(captureText, captureDescription);
+						}
 					}
 				});
 				saveButton.setText("Save");

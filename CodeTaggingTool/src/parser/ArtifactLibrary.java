@@ -143,9 +143,23 @@ public class ArtifactLibrary extends Observable {
 
 	public void addDesignDecision(String id, String desc) {
 		designDecisions.addDecision(id, desc);
+		//HashSet<String >tempSet = new HashSet();
+		//tempSet.add("THIS");
 		designReqLink.map.put(id, new HashSet<String>());
-		System.out.println(designReqLink.map.toString());
-		getReqIdList(id);
+		setChanged();
+		notifyObservers();
+		
+		FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+        try {
+                fos = new FileOutputStream(artifactPath + "designDecisions.ser");
+                out = new ObjectOutputStream(fos);
+                out.writeObject(designDecisions);
+
+                out.close();
+        } catch (Exception ex) {
+                ex.printStackTrace();
+        }
 	}
 
 	public Requirements getRequirements() {
@@ -190,6 +204,7 @@ public class ArtifactLibrary extends Observable {
 
 	// get design design decision description given id
 	public String getDesignDesc(String designDecisionId) {
+		System.out.println(designDecisionId);
 		return designDecisions.map.get(designDecisionId).description;
 	}
 

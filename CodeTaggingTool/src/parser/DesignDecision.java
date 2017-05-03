@@ -1,6 +1,8 @@
 package parser;
 
-public class DesignDecision {
+import java.io.Serializable;
+
+public class DesignDecision implements Serializable {
 
 	String id;
 	String description;
