@@ -157,6 +157,11 @@ public class crudwindow implements Observer {
 					public void widgetSelected(SelectionEvent e) {
 						String captureText = txtDesignName.getText();
 						String captureDescription = txtDesignDescription.getText();
+						if(newDesign ==0) {
+							lib.setDesignDesc(captureText, captureDescription);
+						} else {
+							lib.addDesignDecision(captureText, captureDescription);
+						}
 					}
 				});
 				saveButton.setText("Save");
@@ -165,6 +170,6 @@ public class crudwindow implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
+		//updateContents();
 	}
 }

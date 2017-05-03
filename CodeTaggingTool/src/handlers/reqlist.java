@@ -39,27 +39,27 @@ public class reqlist implements Observer{
 
 	/**
 	 * Create contents of the window.
+	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(499, 401);
 		shell.setText("SWT Application");
 		
-		list = new List(shell, SWT.BORDER);
-		list.setBounds(10, 41, 430, 227);
+		list = new List(shell, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		list.setBounds(10, 41, 479, 328);
 		updateContents();
-		Label lblReqlist = new Label(shell, SWT.NONE);
+		Label lblReqlist = new Label(shell, SWT.CENTER);
 		lblReqlist.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
-		lblReqlist.setBounds(176, 10, 74, 25);
-		lblReqlist.setText("Reqlist");
+		lblReqlist.setBounds(10, 10, 479, 25);
+		lblReqlist.setText("Requirement Reference List");
 
 	}
 	
 	public void updateContents() {
 		for (Entry<String, String> R : lib.getRequirements().map.entrySet()) {
-			list.add(R.getKey()+":"+R.getValue());// + ": " + R.getValue().description);
+			list.add(R.getKey()+": "+R.getValue());
 		}
-		
 	}
 
 	@Override

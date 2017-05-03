@@ -83,11 +83,11 @@ public class librarywindow implements Observer {
 			}
 		});
 		
-		btnViewedit.setBounds(10, 248, 95, 28);
+		btnViewedit.setBounds(10, 248, 118, 28);
 		btnViewedit.setText("View/Edit");
 
 		Button btnCreateNew = new Button(shell, SWT.NONE);
-		btnCreateNew.setBounds(131, 248, 95, 28);
+		btnCreateNew.setBounds(122, 248, 125, 28);
 		btnCreateNew.setText("Create New");
 		btnCreateNew.addSelectionListener(new SelectionAdapter() {
 			@Override

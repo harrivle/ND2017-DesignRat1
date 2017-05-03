@@ -92,35 +92,12 @@ public class CodeTagger implements Observer {
 		
 		Label projectNameLabel = new Label(parent, SWT.NONE);
 		projectNameLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
-		projectNameLabel.setBounds(0, 10, 360, 15);
+		projectNameLabel.setBounds(40, 10, 360, 15);
 		projectNameLabel.setText("Input name of project before initializing Artifact Library:"); 
 		
 		ProjectName = new Text(parent, SWT.BORDER);
 		ProjectName.setBounds(124, 30, 263, 20);
-		
-		Button launchButton = new Button(parent, SWT.PUSH);
-		launchButton.setBounds(124, 110, 263, 43);
-		launchButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
-		launchButton.setText("Launch Design Decision Library");
-		launchButton.addSelectionListener(new SelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if(libIsInitialized == 0) return;
-				// TODO Auto-generated method stub
-				System.out.println("Launch Button Pushed");
-				try{
-					librarywindow window = new librarywindow(lib);
-					window.open();
-				} catch (Exception e2){
-					e2.printStackTrace();
-				}
-			}
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-			}
-		});
-		
+			
 		Button startButton = new Button(parent, SWT.PUSH);
 		startButton.setBounds(124, 60, 263, 43);
 		startButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
@@ -146,8 +123,31 @@ public class CodeTagger implements Observer {
 			}		
 		});
 		
+		Button launchButton = new Button(parent, SWT.PUSH);
+		launchButton.setBounds(124, 110, 263, 43);
+		launchButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
+		launchButton.setText("Launch Design Decision Library");
+		launchButton.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if(libIsInitialized == 0) return;
+				// TODO Auto-generated method stub
+				System.out.println("Launch Button Pushed");
+				try{
+					librarywindow window = new librarywindow(lib);
+					window.open();
+				} catch (Exception e2){
+					e2.printStackTrace();
+				}
+			}
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+			}
+		});
+	
 		Button reqButton = new Button(parent, SWT.PUSH);
-		reqButton.setBounds(124, 150, 263, 43);
+		reqButton.setBounds(124, 160, 263, 43);
 		reqButton.setFont(SWTResourceManager.getFont(".SF NS Text", 12, SWT.NORMAL));
 		reqButton.setText("View Requirement Descriptions");
 		reqButton.addSelectionListener(new SelectionListener() {
@@ -252,7 +252,6 @@ public class CodeTagger implements Observer {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(libIsInitialized == 0) return;
-				// TODO Auto-generated method stub
 				System.out.println("Button Pushed");
 				ArtifactInfo info = new ArtifactInfo("abc", "def");
 				
@@ -261,13 +260,14 @@ public class CodeTagger implements Observer {
 				String project = ProjectName.getText();
 				// String package = PackageText.getText();
 				
-				//lib.addCodeTag(file, method, project);
-				
 				info.addAttribute(AnnotationConstants.FILE, file);
 				info.addAttribute(AnnotationConstants.LINE, method);
 				info.addAttribute(AnnotationConstants.PROJECT, project);
+				//if (DesignChoiceList != null) {
 				int choice = DesignChoiceList.getSelectionIndex();
 				EditorUtil.executeAction(info, DesignChoiceList.getItem(choice), CommentsBox.getText());
+				//}
+				
 				if (DesignChoiceList.getSelection()[0] != null) {
 					java.util.List<String> list = new ArrayList();
 					list.add(FileText.getText());

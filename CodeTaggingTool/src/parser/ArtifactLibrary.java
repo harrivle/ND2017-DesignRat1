@@ -144,8 +144,10 @@ public class ArtifactLibrary extends Observable {
 	public void addDesignDecision(String id, String desc) {
 		designDecisions.addDecision(id, desc);
 		designReqLink.map.put(id, new HashSet<String>());
-		System.out.println(designReqLink.map.toString());
-		getReqIdList(id);
+		//System.out.println(designReqLink.map.get(id).toString());
+		System.out.println(getReqIdList(id) + "nothing to show...");
+		setChanged();
+		notifyObservers();
 	}
 
 	public Requirements getRequirements() {
