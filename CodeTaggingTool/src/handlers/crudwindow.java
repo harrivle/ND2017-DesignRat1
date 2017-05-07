@@ -56,7 +56,7 @@ public class crudwindow implements Observer {
 		Label lblCrudview = new Label(shell, SWT.NONE);
 		lblCrudview.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
 		lblCrudview.setFont(SWTResourceManager.getFont(".Helvetica Neue DeskInterface", 20, SWT.NORMAL));
-		lblCrudview.setText("CRUDView");
+		lblCrudview.setText("Edit Design Decision");
 
 		txtDesignName = new Text(shell, SWT.BORDER);
 		GridData gd_txtDesignName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 3, 1);
